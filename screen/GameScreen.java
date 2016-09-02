@@ -4,21 +4,26 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import shape.Rectangle;
+import sprite.SpriteAnimator;
 
 public class GameScreen extends MyScreen{
 	
-	private float x;
-	private float y;
-	private Image ninja;
-	private boolean toTheRight = true;
+	private Rectangle ninjaRect;
+	private SpriteAnimator ninjaAnimator;
 	
 	public GameScreen(int width, int height){
 		super(width, height);
 		
-		x = 0;
-		y = 0;
-		ninja = new Image("myninja1.png", 600, 200, true, false);
+		ninjaRect = new Rectangle(width / 2, height / 2, 150, 200);
 		
+		Image img = new Image("myninja1.png", 600, 200, true, false);
+		ninjaAnimator = new SpriteAnimator(img);
+		ninjaAnimator.addMode();
+		ninjaAnimator.addRectToMode(0, new Rectangle(0, 0, 150, 200));
+		ninjaAnimator.addRectToMode(0, new Rectangle(150, 0, 150, 200));
+		ninjaAnimator.addRectToMode(0, new Rectangle(300, 0, 150, 200));
+		ninjaAnimator.addRectToMode(0, new Rectangle(450, 0, 150, 200));
 	}
 
 	@Override
@@ -27,33 +32,33 @@ public class GameScreen extends MyScreen{
 		GraphicsContext gc = this.getGraphicsContext();
 		gc.clearRect(0, 0, getWidth(), getHeight());
 		
-		long nanosecondsPerFrame = 16000000 * 10;
-		int frame = (int)(nanoseconds / nanosecondsPerFrame % 4);
-		int start = frame * 150;
-		int end = start + 150;
+
 		
+
 		
-		if(toTheRight)
-			gc.drawImage(ninja, start, 0, 150, 200, x, y, 150, 200);
-		else
-			gc.drawImage(ninja, end, 0, -150, 200, x, y, 150, 200);
+		ninjaAnimator.draw(gc, ninjaRect, nanoseconds, (long)(500 * 1000000));
 	}
 	
 	@Override
 	public void keyPressed(KeyEvent e){
 		float movement = 10;
 		
-		if(e.getCode() == KeyCode.UP)
-			y -= movement;
-		else if(e.getCode() == KeyCode.DOWN)
-			y += movement;
+		if(e.getCode() == KeyCode.UP){
+			ninjaRect.move(0,  -movement);
+		}
+		else if(e.getCode() == KeyCode.DOWN){
+			ninjaRect.move(0,  movement);
+		}
+		
 		else if(e.getCode() == KeyCode.RIGHT){
-			x += movement;
-			toTheRight = true;
+			ninjaRect.move(movement, 0);
+			if(ninjaAnimator.isFlippedHorizontal())
+				ninjaAnimator.flipHorizontal();
 		}
 		else if(e.getCode() == KeyCode.LEFT){
-			x -= movement;
-			toTheRight = false;
+			ninjaRect.move(-movement, 0);
+			if(!ninjaAnimator.isFlippedHorizontal())
+				ninjaAnimator.flipHorizontal();
 		}
 		
 	}

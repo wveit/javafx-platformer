@@ -42,8 +42,8 @@ public class Rectangle {
 	}
 	
 	public void move(double dx, double dy){
-		this.x += x;
-		this.y += y;
+		this.x += dx;
+		this.y += dy;
 	}
 	
 	public double getX(){

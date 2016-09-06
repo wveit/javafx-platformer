@@ -13,6 +13,7 @@ public class SpriteAnimator {
 	int currentRect = -1;
 	boolean flippedHorizontal = false;
 	boolean flippedVertical = false;
+	boolean showBox = true;
 	
 	public SpriteAnimator(Image spritesheet){
 		img = spritesheet;
@@ -68,8 +69,11 @@ public class SpriteAnimator {
 		draw(gc, dest, rectNum);
 	}
 	
-	private void draw(GraphicsContext gc, Rectangle dest, int rectNum){
+	public void draw(GraphicsContext gc, Rectangle dest, int rectNum){
 		Rectangle rect = rectMatrix.get(currentMode).get(rectNum);
+		
+		if(showBox)
+			gc.strokeRect(dest.getX(), dest.getY(), dest.getWidth(), dest.getHeight());
 		
 		if(!flippedHorizontal && !flippedVertical){
 			gc.drawImage(img, rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), dest.getX(), dest.getY(), rect.getWidth(), rect.getHeight());
@@ -100,5 +104,17 @@ public class SpriteAnimator {
 	
 	public boolean isFlippedVertical(){
 		return flippedVertical;
+	}
+	
+	public void setFlippedHorizontal(boolean isFlipped){
+		flippedHorizontal = isFlipped;
+	}
+	
+	public void setFlippedVertical(boolean isFlipped){
+		flippedVertical = isFlipped;
+	}
+	
+	public void showBox(boolean show){
+		showBox = false;
 	}
 }

@@ -32,6 +32,13 @@ public class MyScreen extends Group{
             }
         });
 		
+		setOnKeyReleased(new EventHandler<KeyEvent>(){
+			@Override
+            public void handle(KeyEvent e){
+               keyReleased(e);               
+            }
+        });
+		
 
 	}
 	
@@ -60,6 +67,10 @@ public class MyScreen extends Group{
 	}
 	
 	public void keyPressed(KeyEvent e){
+		
+	}
+	
+	public void keyReleased(KeyEvent e){
 		
 	}
 }

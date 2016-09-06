@@ -1,5 +1,6 @@
 package shape;
 
+
 public class Rectangle {
 	
 	private double x, y, width, height;
@@ -74,4 +75,5 @@ public class Rectangle {
 		
 		return true;
 	}
+	
 }

@@ -27,6 +27,8 @@ public class SpriteAnimator {
 	
 	public void addRectToMode(int mode, Rectangle rect){
 		rectMatrix.get(mode).add(rect);
+		if(currentRect == -1)
+			currentRect = 0;
 	}
 
 	public void setMode(int mode){
@@ -69,23 +71,23 @@ public class SpriteAnimator {
 		draw(gc, dest, rectNum);
 	}
 	
-	public void draw(GraphicsContext gc, Rectangle dest, int rectNum){
-		Rectangle rect = rectMatrix.get(currentMode).get(rectNum);
+	public void draw(GraphicsContext gc, Rectangle destRect, int rectNum){
+		Rectangle srcRect = rectMatrix.get(currentMode).get(rectNum);
 		
 		if(showBox)
-			gc.strokeRect(dest.minX(), dest.minY(), dest.width(), dest.height());
+			gc.strokeRect(destRect.minX(), destRect.minY(), destRect.width(), destRect.height());
 		
 		if(!flippedHorizontal && !flippedVertical){
-			gc.drawImage(img, rect.minX(), rect.minY(), rect.width(), rect.height(), dest.minX(), dest.minY(), rect.width(), rect.height());
+			gc.drawImage(img, srcRect.minX(), srcRect.minY(), srcRect.width(), srcRect.height(), destRect.minX(), destRect.minY(), destRect.width(), destRect.height());
 		}
 		else if(flippedHorizontal && !flippedVertical){
-			gc.drawImage(img, rect.maxX(), rect.minY(), -rect.width(), rect.height(), dest.minX(), dest.minY(), rect.width(), rect.height());
+			gc.drawImage(img, srcRect.maxX(), srcRect.minY(), -srcRect.width(), srcRect.height(), destRect.minX(), destRect.minY(), destRect.width(), destRect.height());
 		}
 		else if(!flippedHorizontal && flippedVertical){
-			gc.drawImage(img, rect.minX(), rect.maxY(), rect.width(), -rect.height(), dest.minX(), dest.minY(), rect.width(), rect.height());
+			gc.drawImage(img, srcRect.minX(), srcRect.maxY(), srcRect.width(), -srcRect.height(), destRect.minX(), destRect.minY(), destRect.width(), destRect.height());
 		}
 		else{
-			gc.drawImage(img, rect.maxX(), rect.maxY(), -rect.width(), -rect.height(), dest.minX(), dest.minY(), rect.width(), rect.height());
+			gc.drawImage(img, srcRect.maxX(), srcRect.maxY(), -srcRect.width(), -srcRect.height(), destRect.minX(), destRect.minY(), destRect.width(), destRect.height());
 		}
 		
 	}

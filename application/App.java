@@ -4,8 +4,9 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.Group;
+
+import game.GameScreen;
 import screen.MyScreen;
-import screen.GameScreen;
 
 
 public class App extends Application{

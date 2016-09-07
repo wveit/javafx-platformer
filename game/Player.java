@@ -14,7 +14,7 @@ public class Player {
 	private boolean isOnPlatform = false;
 	
 	public Player(){
-		rect = new Rectangle(0, 0, 150, 200);
+		rect = new Rectangle(0, 0, 50, 75);
 		privateReset();
 	}
 	
@@ -102,6 +102,9 @@ public class Player {
 		vX = vY = 0;
 		requestLeft = requestRight = requestJump = false;
 	}
+	
+	public double vX(){ return vX; }
+	public double vY(){ return vY; }
 	
 
 }

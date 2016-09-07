@@ -47,21 +47,14 @@ public class Rectangle {
 		this.y += dy;
 	}
 	
-	public double getX(){
-		return x;
-	}
-	
-	public double getY(){
-		return y;
-	}
-	
-	public double getWidth(){
-		return width;
-	}
-	
-	public double getHeight(){
-		return height;
-	}
+	public double width(){ return width; }
+	public double height(){	return height; }
+	public double minX(){ return x; }
+	public double maxX(){ return x + width; }
+	public double centerX(){ return x + width / 2; }
+	public double minY(){ return y; }
+	public double maxY(){ return y + height; }
+	public double centerY(){ return y + height / 2; }
 	
 	public boolean overlaps(Rectangle other){
 		if(x > other.x + other.width)
@@ -74,6 +67,10 @@ public class Rectangle {
 			return false;
 		
 		return true;
+	}
+	
+	public boolean inside(Rectangle other){
+		return maxX() < other.maxX() && minX() > other.minX() && minY() > other.minY() && maxY() < other.maxY();
 	}
 	
 }

@@ -6,22 +6,35 @@ public class Collision {
 	public static CollisionInfo resolve(Rectangle r1, Rectangle r2){
 		CollisionInfo []infos = new CollisionInfo[4];
 		
-		infos[0] = new CollisionInfo(-1, 0, r1.getX() + r1.getWidth() - r2.getX());
-		infos[1] = new CollisionInfo(1, 0, r2.getX() + r2.getWidth() - r1.getX());
-		infos[2] = new CollisionInfo(0, -1, r1.getY() + r1.getHeight() - r2.getY());
-		infos[3] = new CollisionInfo(0, 1, r2.getY() + r2.getHeight() - r1.getY());
+		infos[0] = new CollisionInfo(-1, 0, r1.maxX() - r2.minX());
+		infos[1] = new CollisionInfo(1, 0, r2.maxX() - r1.minX());
+		infos[2] = new CollisionInfo(0, -1, r1.maxY() - r2.minY());
+		infos[3] = new CollisionInfo(0, 1, r2.maxY() - r1.minY());
 		
-		return smallestCollisionInfo(infos);
+		int smallestIndex = smallestNonNegCollisionInfo(infos);
+		return (smallestIndex >= 0 ? infos[smallestIndex] : new CollisionInfo());
 	}
-
-	private static CollisionInfo smallestCollisionInfo(CollisionInfo[] infos){
-		int smallest = 0;
-		for(int i = 1; i < infos.length; i++){
-			if(infos[i].getDistance() < infos[smallest].getDistance()){
+	
+	public static CollisionInfo resolveUncollision(Rectangle r1, Rectangle r2){
+		CollisionInfo []infos = new CollisionInfo[4];
+		
+		infos[0] = new CollisionInfo(-1, 0, r1.maxX() - r2.maxX());
+		infos[1] = new CollisionInfo(1, 0, r2.minX() - r1.minX());
+		infos[2] = new CollisionInfo(0, -1, r1.maxY() - r2.maxY());
+		infos[3] = new CollisionInfo(0, 1, r2.minY() - r1.minY());
+		
+		int smallestIndex = smallestNonNegCollisionInfo(infos);
+		return (smallestIndex >= 0 ? infos[smallestIndex] : new CollisionInfo());
+	}
+	
+	private static int smallestNonNegCollisionInfo(CollisionInfo[] infos){
+		int smallest = -1;
+		for(int i = 0; i < infos.length; i++){
+			if( infos[i].getDistance() > 0 && ( smallest == -1 || infos[i].getDistance() < infos[smallest].getDistance() ) ){
 				smallest = i;
 			}
 		}
 		
-		return infos[smallest];
+		return smallest;
 	}
 }

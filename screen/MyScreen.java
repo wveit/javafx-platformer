@@ -2,21 +2,15 @@ package screen;
 
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 
-public class MyScreen extends Group{
+public class MyScreen extends Canvas{
 
-	private Canvas canvas;
-	private GraphicsContext gc;
 	private AnimationTimer timer;
 	
 	public MyScreen(int width, int height){
-		canvas = new Canvas(width, height);
-		this.getChildren().add(canvas);
-		gc = canvas.getGraphicsContext2D();
+		super(width, height);
 		
 		timer = new AnimationTimer(){
 			@Override
@@ -42,17 +36,7 @@ public class MyScreen extends Group{
 
 	}
 	
-	public double getWidth(){
-		return canvas.getWidth();
-	}
-	
-	public double getHeight(){
-		return canvas.getHeight();
-	}
-	
-	public GraphicsContext getGraphicsContext(){
-		return gc;
-	}
+
 	
 	public void start(){
 		timer.start();

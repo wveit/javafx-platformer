@@ -73,19 +73,19 @@ public class SpriteAnimator {
 		Rectangle rect = rectMatrix.get(currentMode).get(rectNum);
 		
 		if(showBox)
-			gc.strokeRect(dest.getX(), dest.getY(), dest.getWidth(), dest.getHeight());
+			gc.strokeRect(dest.minX(), dest.minY(), dest.width(), dest.height());
 		
 		if(!flippedHorizontal && !flippedVertical){
-			gc.drawImage(img, rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), dest.getX(), dest.getY(), rect.getWidth(), rect.getHeight());
+			gc.drawImage(img, rect.minX(), rect.minY(), rect.width(), rect.height(), dest.minX(), dest.minY(), rect.width(), rect.height());
 		}
 		else if(flippedHorizontal && !flippedVertical){
-			gc.drawImage(img, rect.getX() + rect.getWidth(), rect.getY(), -rect.getWidth(), rect.getHeight(), dest.getX(), dest.getY(), rect.getWidth(), rect.getHeight());
+			gc.drawImage(img, rect.maxX(), rect.minY(), -rect.width(), rect.height(), dest.minX(), dest.minY(), rect.width(), rect.height());
 		}
 		else if(!flippedHorizontal && flippedVertical){
-			gc.drawImage(img, rect.getX(), rect.getY() + rect.getHeight(), rect.getWidth(), -rect.getHeight(), dest.getX(), dest.getY(), rect.getWidth(), rect.getHeight());
+			gc.drawImage(img, rect.minX(), rect.maxY(), rect.width(), -rect.height(), dest.minX(), dest.minY(), rect.width(), rect.height());
 		}
 		else{
-			gc.drawImage(img, rect.getX() + rect.getWidth(), rect.getY() + rect.getHeight(), -rect.getWidth(), -rect.getHeight(), dest.getX(), dest.getY(), rect.getWidth(), rect.getHeight());
+			gc.drawImage(img, rect.maxX(), rect.maxY(), -rect.width(), -rect.height(), dest.minX(), dest.minY(), rect.width(), rect.height());
 		}
 		
 	}

@@ -1,9 +1,10 @@
-package sprite;
+package engine.sprite;
 
 import java.util.ArrayList;
+
+import engine.shape.Rectangle;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import shape.Rectangle;
 
 
 public class SpriteAnimator {
@@ -13,7 +14,7 @@ public class SpriteAnimator {
 	int currentRect = -1;
 	boolean flippedHorizontal = false;
 	boolean flippedVertical = false;
-	boolean showBox = true;
+	boolean showBox = false;
 	
 	public SpriteAnimator(Image spritesheet){
 		img = spritesheet;

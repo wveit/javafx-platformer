@@ -1,4 +1,4 @@
-package screen;
+package engine.screen;
 
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;

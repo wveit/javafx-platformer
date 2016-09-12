@@ -1,6 +1,6 @@
 package game;
 
-import shape.Rectangle;
+import engine.shape.Rectangle;
 
 public class Boundary extends Rectangle{
 	

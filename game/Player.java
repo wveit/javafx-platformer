@@ -1,8 +1,8 @@
 package game;
 
-import physics.Collision;
-import physics.CollisionInfo;
-import shape.Rectangle;
+import engine.physics.Collision;
+import engine.physics.CollisionInfo;
+import engine.shape.Rectangle;
 
 public class Player {
 	

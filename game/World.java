@@ -1,7 +1,8 @@
 package game;
 
 import java.util.ArrayList;
-import shape.Rectangle;
+
+import engine.shape.Rectangle;
 
 public class World {
 	public double gravity = -1000;

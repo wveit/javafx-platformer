@@ -1,6 +1,6 @@
-package physics;
+package engine.physics;
 
-import shape.Rectangle;
+import engine.shape.Rectangle;
 
 public class Collision {
 	public static CollisionInfo resolve(Rectangle r1, Rectangle r2){

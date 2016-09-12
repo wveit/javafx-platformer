@@ -27,7 +27,7 @@ public class World {
 		}
 
 		
-		player = new Player( new Rectangle(250, 250, 50, 75) );
+		player = new Player(250, 250, 50, 75);
 		lava = new Lava(0, -100 - height, width, height);
 		
 	}

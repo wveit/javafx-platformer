@@ -76,7 +76,7 @@ public class Renderer {
 	}
 	
 	public void render(Player player, Rectangle boundary){
-		Rectangle rect = flipY( player.rect() );
+		Rectangle rect = flipY( player );
 		rect.move(0, -boundary.minY());
 
 		long millisPerFrame = 100;

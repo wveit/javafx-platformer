@@ -11,12 +11,11 @@ public class Boundary extends Rectangle{
 	}
 	
 	public void update(double deltaTime, World world){
-		Rectangle rect = world.player.rect();
 		
-		if(centerY() - rect.centerY() > height() / 8 && minY() > 0){
+		if(centerY() - world.player.centerY() > height() / 8 && minY() > 0){
 			move(0, -speed * deltaTime);
 		}
-		else if(rect.centerY() - centerY() > height() / 4){
+		else if(world.player.centerY() - centerY() > height() / 4){
 			move(0, speed * deltaTime);
 		}
 	}

@@ -4,9 +4,8 @@ import engine.physics.Collision;
 import engine.physics.CollisionInfo;
 import engine.shape.Rectangle;
 
-public class Player {
+public class Player extends Rectangle{
 	
-	private Rectangle rect;
 	private double vX, vY;
 	private boolean requestLeft, requestRight, requestJump;
 	private double moveSpeed = 250;
@@ -14,25 +13,17 @@ public class Player {
 	private boolean isOnPlatform = false;
 	private boolean isDead;
 	
-	public Player(){
-		rect = new Rectangle(0, 0, 50, 75);
+	public Player(double x, double y, double width, double height){
+		super(x, y, width, height);
 		privateReset();
 	}
 	
 	public boolean isDead(){ return isDead; }
 	
-	public Player(Rectangle rect){
-		this.rect = rect;
-		privateReset();
-	}
+
 	
-	public Rectangle rect(){
-		return rect;
-	}
-	
-	public void setRect(Rectangle rect){
-		this.rect = rect;
-	}
+
+
 	
 	public void update(double deltaTime, World world){
 		vX = 0;
@@ -54,14 +45,14 @@ public class Player {
 			requestJump = false;
 		}
 		
-		rect.move(vX * deltaTime, vY * deltaTime);
+		move(vX * deltaTime, vY * deltaTime);
 		
 		isOnPlatform = false;
 		
 		for(Rectangle pRect : world.platformList){
-			if(rect.overlaps(pRect)){
-				CollisionInfo ci = Collision.resolve(rect, pRect);
-				rect.move(ci.getX() * ci.getDistance(), ci.getY() * ci.getDistance());
+			if(overlaps(pRect)){
+				CollisionInfo ci = Collision.resolve(this, pRect);
+				move(ci.getX() * ci.getDistance(), ci.getY() * ci.getDistance());
 				if(ci.getX() != 0)
 					vX = 0;
 				else if(ci.getY() > 0){
@@ -74,15 +65,15 @@ public class Player {
 			}
 		}
 		
-		if(!rect.inside(world.boundary)){
-			CollisionInfo ci = Collision.resolveUncollision(rect, world.boundary);
+		if(!inside(world.boundary)){
+			CollisionInfo ci = Collision.resolveUncollision(this, world.boundary);
 			if(ci.getX() != 0){
-				rect.move(ci.getX() * ci.getDistance(), 0);
+				move(ci.getX() * ci.getDistance(), 0);
 			}
 				
 		}
 		
-		if(rect.overlaps(world.lava)){
+		if(overlaps(world.lava)){
 			isDead = true;
 		}
 		

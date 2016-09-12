@@ -60,14 +60,19 @@ public class GameScreen extends MyScreen{
 		double deltaTime = (nanoseconds - lastNanoseconds) / 1000000000.0;
 		lastNanoseconds = nanoseconds;
 		
-		// Update game logic
-		world.update(deltaTime);
-		
-		// Draw
-		GraphicsContext gc = this.getGraphicsContext2D();
-		gc.clearRect(0, 0, getWidth(), getHeight());
-		
-		renderer.render(world);		
+		if(world.player.isDead()){
+			renderer.renderGameOver();
+			
+		}
+		else{
+			// Update game logic
+			world.update(deltaTime);
+			
+			// Draw
+			GraphicsContext gc = this.getGraphicsContext2D();
+			gc.clearRect(0, 0, getWidth(), getHeight());
+			renderer.render(world);
+		}
 	}
 	
 	@Override

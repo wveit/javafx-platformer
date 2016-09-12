@@ -9,6 +9,7 @@ public class World {
 	public Player player;
 	public Boundary boundary;
 	public ArrayList<Rectangle> platformList = new ArrayList<Rectangle>();
+	public Lava lava;
 	
 	public World(double width, double height){
 		boundary = new Boundary(0, 0, width, height);
@@ -27,10 +28,13 @@ public class World {
 
 		
 		player = new Player( new Rectangle(250, 250, 50, 75) );
+		lava = new Lava(0, -100 - height, width, height);
+		
 	}
 	
 	public void update(double deltaTime){
 		player.update(deltaTime, this);
 		boundary.update(deltaTime, this);
+		lava.update(deltaTime, this);
 	}
 }

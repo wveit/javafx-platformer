@@ -11,6 +11,7 @@ public class Renderer {
 	private GraphicsContext gc;
 	private SpriteAnimator ninjaAnimator;
 	private Image bkgdImage;
+	private Image gameOverImage;
 	private double screenWidth;
 	private double screenHeight;
 	private double scaleX;
@@ -27,6 +28,8 @@ public class Renderer {
 		ninjaAnimator.addMode();
 		for(int i = 0; i < 4; i++)
 			ninjaAnimator.addRectToMode(0, new Rectangle(0 + i * 150, 0, 150, 200));
+		
+		gameOverImage = new Image("assets/gameover.png");
 		
 		bkgdImage = new Image("assets/volcano1.png");
 	}
@@ -51,6 +54,7 @@ public class Renderer {
 		
 		render(world.player, boundaryRect);
 		render(world.boundary);
+		render(world.lava, boundaryRect);
 	}
 	
 	public void renderBkgd(Rectangle boundary){
@@ -97,6 +101,13 @@ public class Renderer {
 		gc.fillRect(rect.minX(), rect.minY() - boundary.minY(), rect.width(), rect.height());
 	}
 	
+
+	public void render(Lava lava, Rectangle boundary){
+		Rectangle rect = flipY( lava );
+		gc.setFill(Color.ORANGE);
+		gc.fillRect(rect.minX(), rect.minY() - boundary.minY(), rect.width(), rect.height());
+	}
+	
 	public void render(Boundary boundary){
 		Rectangle rect = flipY( boundary );
 		gc.setStroke(Color.BLUE);
@@ -107,4 +118,7 @@ public class Renderer {
 		return new Rectangle(rect.minX(), screenHeight - rect.minY() - rect.height(), rect.width(), rect.height());
 	}
 	
+	public void renderGameOver(){
+		gc.drawImage(gameOverImage, 0, 0, screenWidth, screenHeight);
+	}
 }

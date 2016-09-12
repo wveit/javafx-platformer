@@ -12,11 +12,14 @@ public class Player {
 	private double moveSpeed = 250;
 	private double jumpSpeed = 1000;
 	private boolean isOnPlatform = false;
+	private boolean isDead;
 	
 	public Player(){
 		rect = new Rectangle(0, 0, 50, 75);
 		privateReset();
 	}
+	
+	public boolean isDead(){ return isDead; }
 	
 	public Player(Rectangle rect){
 		this.rect = rect;
@@ -79,6 +82,10 @@ public class Player {
 				
 		}
 		
+		if(rect.overlaps(world.lava)){
+			isDead = true;
+		}
+		
 	}
 	
 	public boolean isOnPlatform(){
@@ -100,7 +107,7 @@ public class Player {
 	
 	private void privateReset(){
 		vX = vY = 0;
-		requestLeft = requestRight = requestJump = false;
+		requestLeft = requestRight = requestJump = isDead = false;
 	}
 	
 	public double vX(){ return vX; }

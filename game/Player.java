@@ -73,6 +73,12 @@ public class Player extends Rectangle{
 				
 		}
 		
+		for(Monster m : world.monsterList){
+			if(this.overlaps(m)){
+				isDead = true;
+			}
+		}
+		
 		if(overlaps(world.lava)){
 			isDead = true;
 		}

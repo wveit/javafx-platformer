@@ -120,4 +120,7 @@ public class SpriteAnimator {
 	public void showBox(boolean show){
 		showBox = false;
 	}
+	
+	public int getCurrentMode(){ return currentMode; }
+	public int getCurrentRect(){ return currentRect; }
 }

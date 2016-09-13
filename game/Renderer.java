@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 public class Renderer {
 	private GraphicsContext gc;
 	private SpriteAnimator ninjaAnimator;
+	private SpriteAnimator monsterAnimator;
 	private Image bkgdImage;
 	private Image gameOverImage;
 	private double screenWidth;
@@ -28,6 +29,12 @@ public class Renderer {
 		ninjaAnimator.addMode();
 		for(int i = 0; i < 4; i++)
 			ninjaAnimator.addRectToMode(0, new Rectangle(0 + i * 150, 0, 150, 200));
+		
+		img = new Image("assets/monster.png");
+		monsterAnimator = new SpriteAnimator(img);
+		monsterAnimator.addMode();
+		monsterAnimator.addRectToMode(0, new Rectangle(0, 0, img.getWidth(), img.getHeight()));
+		
 		
 		gameOverImage = new Image("assets/gameover.png");
 		
@@ -51,6 +58,9 @@ public class Renderer {
 		for(Rectangle rect : world.platformList){
 			render(rect, boundaryRect);
 		}
+		
+		for(Monster m : world.monsterList)
+			render(m, boundaryRect);
 		
 		render(world.player, boundaryRect);
 		render(world.boundary);
@@ -99,6 +109,22 @@ public class Renderer {
 		Rectangle rect = flipY( platform );
 		gc.setFill(Color.BLACK);
 		gc.fillRect(rect.minX(), rect.minY() - boundary.minY(), rect.width(), rect.height());
+	}
+	
+	public void render(Monster monster, Rectangle boundary){
+		Rectangle rect = flipY( monster );
+		rect.move(0, -boundary.minY());
+		monsterAnimator.draw(gc, rect);
+		
+		if(System.currentTimeMillis() / 1000 % 2 == 0){
+			monsterAnimator.setFlippedHorizontal(false);
+		}
+		else{
+			monsterAnimator.setFlippedHorizontal(true);
+		}
+		
+
+		
 	}
 	
 

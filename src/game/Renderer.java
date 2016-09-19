@@ -22,6 +22,7 @@ public class Renderer {
 	private Image gameOverImage;
 	
 	private SpriteAnimator ninjaAnimator;
+	private SpriteAnimator lavaMonsterAnimator;
 	
 	public Renderer(GraphicsContext gc, double width, double height){
 		this.gc = gc;
@@ -40,6 +41,10 @@ public class Renderer {
 			ninjaAnimator.showBox(true);
 			
 			lavaMonsterImage = new Image(new File("assets/lava_monster.png").toURI().toURL().toString());
+			lavaMonsterAnimator = new SpriteAnimator(lavaMonsterImage);
+			lavaMonsterAnimator.addMode();
+			lavaMonsterAnimator.addRectToMode(0, new Rectangle(0, 0, 191, 263));
+			
 			spikeyImage = new Image(new File("assets/spikey.png").toURI().toURL().toString());
 			vulcorImage = new Image(new File("assets/vulcor.png").toURI().toURL().toString());
 			backgroundImage = new Image(new File("assets/volcano_background.png").toURI().toURL().toString());
@@ -87,13 +92,29 @@ public class Renderer {
 	}
 	
 	public void renderBackground(){
-		Rectangle r = transromRect(new Rectangle(0, 0, 1200, 10000));
-		draw(backgroundImage, new Rectangle(0, 0, 200, 800), r);
+		// find src Rectangle
+		final double levelHeight = 10000;
+		final double scrollRatio = 0.5;
+		
+		double srcHeight = viewport.height() * backgroundImage.getHeight() / levelHeight;
+		double srcY = backgroundImage.getHeight() - srcHeight - viewport.minY() * scrollRatio * backgroundImage.getHeight() / levelHeight;
+		Rectangle src = new Rectangle(0, srcY, backgroundImage.getWidth(), srcHeight );
+		
+		// find dest Rectangle
+		Rectangle dest = transromRect(viewport);
+		
+		// draw
+		draw(backgroundImage, src, dest);
 	}
 	
 	public void render(LavaMonster m){
 		Rectangle r = transromRect(m.rect());
-		draw(lavaMonsterImage, new Rectangle(0, 0, 191, 263), r);
+		if((int)m.rect().minX() / 40 % 2 == 0)
+			lavaMonsterAnimator.setFlippedHorizontal(true);
+		else
+			lavaMonsterAnimator.setFlippedHorizontal(false);
+		
+		lavaMonsterAnimator.draw(gc, r);
 	}
 	
 	public void render(Spikey s){

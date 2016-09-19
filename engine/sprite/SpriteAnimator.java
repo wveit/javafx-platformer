@@ -14,7 +14,7 @@ public class SpriteAnimator {
 	int currentRect = -1;
 	boolean flippedHorizontal = false;
 	boolean flippedVertical = false;
-	boolean showBox = false;
+	boolean showBox = true;
 	
 	public SpriteAnimator(Image spritesheet){
 		img = spritesheet;

@@ -14,24 +14,30 @@ public class GameScreen extends MyScreen{
 	
 	
 	private World world;
-	private Renderer renderer;
+	private Renderer2 renderer;
 	private MediaPlayer mediaPlayer;
 	
 	private long lastNanoseconds = 0;
+	private int logicFPS = 60;
+	private double logicAccumulator = 0;
 	
 	public GameScreen(int width, int height){
 		super(width, height);
 		
-		world = new World(width, height);
-		renderer = new Renderer(this.getGraphicsContext2D(), width, height);
+		world = new World("hardwired_level.lvl");
+		renderer = new Renderer2(this.getGraphicsContext2D(), width, height);
 		
+		startGameMusic();
+	}
+	
+	public void startGameMusic(){
 		File file = new File("assets/airwolf.wav");
 		if(file.exists()){			
 			Media media = null;
 			try{
 				media = new Media("file:" + file.getAbsolutePath());
 			}catch(Exception e){
-				System.out.println("Could not play music because file was not found.");
+				System.out.println("Exception while loading audio.");
 			}
 			
 			mediaPlayer = new MediaPlayer(media);
@@ -44,10 +50,8 @@ public class GameScreen extends MyScreen{
 			mediaPlayer.play();
 		}
 		else{
-			System.out.println("file does not exist");
+			System.out.println("could not find audio file.");
 		}
-
-		
 	}
 
 	@Override
@@ -65,13 +69,21 @@ public class GameScreen extends MyScreen{
 			
 		}
 		else{
-			// Update game logic
-			world.update(deltaTime);
 			
+			logicAccumulator += deltaTime;
+			while(logicAccumulator >= 1.0 / logicFPS){
+				// Update game logic
+				world.update(1.0 / logicFPS);
+				
+				logicAccumulator -= 1.0 / logicFPS;
+			}
+
+
 			// Draw
 			GraphicsContext gc = this.getGraphicsContext2D();
 			gc.clearRect(0, 0, getWidth(), getHeight());
 			renderer.render(world);
+
 		}
 	}
 	
@@ -89,6 +101,11 @@ public class GameScreen extends MyScreen{
 		}
 		else if(e.getCode() == KeyCode.ESCAPE){
 			Platform.exit();
+		}
+		else if(e.getCode() == KeyCode.R){
+			if(world.player.isDead()){
+				world = new World("hardwired_level.lvl");
+			}
 		}
 		
 	}

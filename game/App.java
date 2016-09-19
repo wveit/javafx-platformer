@@ -18,4 +18,8 @@ public class App extends Application{
 		screen.start();
 		screen.requestFocus();
 	}
+	
+	public static void main(String[] args){
+		Application.launch(args);
+	}
 }

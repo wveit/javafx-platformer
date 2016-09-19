@@ -30,11 +30,12 @@ public class Collision {
 	private static int smallestNonNegCollisionInfo(CollisionInfo[] infos){
 		int smallest = -1;
 		for(int i = 0; i < infos.length; i++){
-			if( infos[i].getDistance() > 0 && ( smallest == -1 || infos[i].getDistance() < infos[smallest].getDistance() ) ){
+			if( infos[i].getDistance() >= 0 && ( smallest == -1 || infos[i].getDistance() < infos[smallest].getDistance() ) ){
 				smallest = i;
 			}
 		}
 		
 		return smallest;
 	}
+
 }

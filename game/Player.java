@@ -4,8 +4,9 @@ import engine.physics.Collision;
 import engine.physics.CollisionInfo;
 import engine.shape.Rectangle;
 
-public class Player extends Rectangle{
+public class Player{
 	
+	private Rectangle rect;
 	private double vX, vY;
 	private boolean requestLeft, requestRight, requestJump;
 	private double moveSpeed = 250;
@@ -14,7 +15,7 @@ public class Player extends Rectangle{
 	private boolean isDead;
 	
 	public Player(double x, double y, double width, double height){
-		super(x, y, width, height);
+		rect = new Rectangle(x, y, width, height);
 		privateReset();
 	}
 	
@@ -45,14 +46,15 @@ public class Player extends Rectangle{
 			requestJump = false;
 		}
 		
-		move(vX * deltaTime, vY * deltaTime);
+		rect.move(vX * deltaTime, vY * deltaTime);
 		
 		isOnPlatform = false;
 		
-		for(Rectangle pRect : world.platformList){
-			if(overlaps(pRect)){
-				CollisionInfo ci = Collision.resolve(this, pRect);
-				move(ci.getX() * ci.getDistance(), ci.getY() * ci.getDistance());
+		for(Platform p : world.platformList){
+			Rectangle pRect = p.rect();
+			if(rect.overlaps(pRect)){
+				CollisionInfo ci = Collision.resolve(rect, pRect);
+				rect.move(ci.getX() * ci.getDistance(), ci.getY() * ci.getDistance());
 				if(ci.getX() != 0)
 					vX = 0;
 				else if(ci.getY() > 0){
@@ -65,21 +67,22 @@ public class Player extends Rectangle{
 			}
 		}
 		
-		if(!inside(world.boundary)){
-			CollisionInfo ci = Collision.resolveUncollision(this, world.boundary);
+		if(!rect.inside(world.boundary)){
+			CollisionInfo ci = Collision.resolveUncollision(rect, world.boundary);
 			if(ci.getX() != 0){
-				move(ci.getX() * ci.getDistance(), 0);
+				rect.move(ci.getX() * ci.getDistance(), 0);
 			}
 				
 		}
 		
-		for(Monster m : world.monsterList){
-			if(this.overlaps(m)){
-				isDead = true;
+		for(Enemy e : world.enemyList){
+			if(rect.overlaps(e.rect())){
+				if(!(e instanceof Vulcor))
+					isDead = true;
 			}
 		}
 		
-		if(overlaps(world.lava)){
+		if(rect.overlaps(world.lava.rect())){
 			isDead = true;
 		}
 		
@@ -110,5 +113,6 @@ public class Player extends Rectangle{
 	public double vX(){ return vX; }
 	public double vY(){ return vY; }
 	
+	public Rectangle rect(){ return rect; }
 
 }

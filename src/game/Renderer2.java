@@ -78,7 +78,6 @@ public class Renderer2 {
 	public void renderBackground(){
 		Rectangle r = translateRect(new Rectangle(0, 0, 1200, 10000));
 		draw(backgroundImage, new Rectangle(0, 0, 200, 800), r);
-		
 	}
 	
 	public void render(LavaMonster m){

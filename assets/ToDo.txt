@@ -1,0 +1,14 @@
+
+Add bee monster
+Add wall decorations
+Add Platform graphics
+Add Graphics for monsters that don't have it yet
+Add goal at top and ending animation
+Create load level from file
+Create level designer tool
+Abstract Physics away from individual character classes
+Consider having Player and Enemies inherit from common base
+Sound effects for in game events
+Pause and pause menu
+Start Menu
+Consider Settings Menu

@@ -14,7 +14,7 @@ public class GameScreen extends MyScreen{
 	
 	
 	private World world;
-	private Renderer2 renderer;
+	private Renderer renderer;
 	private MediaPlayer mediaPlayer;
 	
 	private long lastNanoseconds = 0;
@@ -25,7 +25,7 @@ public class GameScreen extends MyScreen{
 		super(width, height);
 		
 		world = new World("hardwired_level.lvl");
-		renderer = new Renderer2(this.getGraphicsContext2D(), width, height);
+		renderer = new Renderer(this.getGraphicsContext2D(), width, height);
 		
 		startGameMusic();
 	}

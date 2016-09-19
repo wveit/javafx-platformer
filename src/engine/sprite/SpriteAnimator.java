@@ -1,10 +1,10 @@
 package engine.sprite;
 
 import java.util.ArrayList;
-
-import engine.shape.Rectangle;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+
+import engine.shape.Rectangle;
 
 
 public class SpriteAnimator {
@@ -14,7 +14,7 @@ public class SpriteAnimator {
 	int currentRect = -1;
 	boolean flippedHorizontal = false;
 	boolean flippedVertical = false;
-	boolean showBox = true;
+	boolean showBox = false;
 	
 	public SpriteAnimator(Image spritesheet){
 		img = spritesheet;
@@ -41,6 +41,10 @@ public class SpriteAnimator {
 			currentRect = 0;
 	}
 	
+	public void setRect(int rect){
+		this.currentRect = rect;
+	}
+	
 	public void flipHorizontal(){
 		flippedHorizontal = !flippedHorizontal;
 	}
@@ -62,18 +66,12 @@ public class SpriteAnimator {
 	}
 
 	public void draw(GraphicsContext gc, Rectangle dest){
-		draw(gc, dest, currentRect);
+		draw(gc, dest, currentMode, currentRect);
 	}
+
 	
-	public void draw(GraphicsContext gc, Rectangle dest, long gameTimeNanos, long delayNanos){
-		int numRects = getNumRects(currentMode);
-		int rectNum = (int)(gameTimeNanos / delayNanos % numRects);
-		
-		draw(gc, dest, rectNum);
-	}
-	
-	public void draw(GraphicsContext gc, Rectangle destRect, int rectNum){
-		Rectangle srcRect = rectMatrix.get(currentMode).get(rectNum);
+	public void draw(GraphicsContext gc, Rectangle destRect, int modeNum, int rectNum){
+		Rectangle srcRect = rectMatrix.get(modeNum).get(rectNum);
 		
 		if(showBox)
 			gc.strokeRect(destRect.minX(), destRect.minY(), destRect.width(), destRect.height());
@@ -118,7 +116,7 @@ public class SpriteAnimator {
 	}
 	
 	public void showBox(boolean show){
-		showBox = false;
+		showBox = show;
 	}
 	
 	public int getCurrentMode(){ return currentMode; }

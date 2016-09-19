@@ -2,229 +2,162 @@ package game;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+
+import java.io.File;
+
 import engine.shape.Rectangle;
 import engine.sprite.SpriteAnimator;
 import javafx.scene.image.Image;
 
-
 public class Renderer {
 	private GraphicsContext gc;
-	private SpriteAnimator ninjaAnimator;
-	private SpriteAnimator monsterAnimator;
+	private Rectangle viewport;
+	
+	private Image ninjaImage;
+	private Image lavaMonsterImage;
+	private Image spikeyImage;
+	private Image vulcorImage;
+	private Image backgroundImage;
 	private Image platformImage;
-	private Image bkgdImage;
 	private Image gameOverImage;
-	private Image sideRockImage;
-	private double screenWidth;
-	private double screenHeight;
+	
+	private SpriteAnimator ninjaAnimator;
 	
 	public Renderer(GraphicsContext gc, double width, double height){
 		this.gc = gc;
-		this.screenWidth = width;
-		this.screenHeight = height;
-		
-		// Need some try/catch blocks just in case assets are missing
-		
-		platformImage = new Image("assets/platform.png");
-		
-		Image img = new Image("assets/myninja.png");
-		ninjaAnimator = new SpriteAnimator(img);
-		ninjaAnimator.addMode();
-		for(int i = 0; i < 4; i++)
-			ninjaAnimator.addRectToMode(0, new Rectangle(0 + i * 150, 0, 150, 200));
-		
-		img = new Image("assets/monster.png");
-		monsterAnimator = new SpriteAnimator(img);
-		monsterAnimator.addMode();
-		monsterAnimator.addRectToMode(0, new Rectangle(0, 0, img.getWidth(), img.getHeight()));
-		
-		gameOverImage = new Image("assets/gameover.png");
 
-		bkgdImage = new Image("assets/volcano1.png");
-		sideRockImage = new Image("assets/walls.png");
+		viewport = new Rectangle(0, 0, width, height);
+		
+		// load images		
+		try{
+			ninjaImage = new Image(new File("assets/ninja.png").toURI().toURL().toString());
+			ninjaAnimator = new SpriteAnimator(ninjaImage);
+			ninjaAnimator.addMode();
+			ninjaAnimator.addRectToMode(0, new Rectangle(0, 0, 105, 175));
+			ninjaAnimator.addRectToMode(0, new Rectangle(105, 0, 105, 175));
+			ninjaAnimator.addRectToMode(0, new Rectangle(210, 0, 105, 175));
+			ninjaAnimator.addRectToMode(0, new Rectangle(315, 0, 105, 175));
+			ninjaAnimator.showBox(true);
+			
+			lavaMonsterImage = new Image(new File("assets/lava_monster.png").toURI().toURL().toString());
+			spikeyImage = new Image(new File("assets/spikey.png").toURI().toURL().toString());
+			vulcorImage = new Image(new File("assets/vulcor.png").toURI().toURL().toString());
+			backgroundImage = new Image(new File("assets/volcano_background.png").toURI().toURL().toString());
+			platformImage = new Image(new File("assets/platform.png").toURI().toURL().toString());
+			gameOverImage = new Image(new File("assets/gameover.png").toURI().toURL().toString());
+		
+		}catch(Exception e){
+			System.out.println("Renderer2 had problems loading images.");
+		}
+		
 	}
 	
 	
 	public void render(World world){
 		
-		Rectangle boundaryRect = flipY( world.boundary );
+		// update viewport based on player position
+		double diff = viewport.centerY() - world.player.rect().centerY();
+		viewport.move(0, -diff);
+		if(viewport.minY() < 0)
+			viewport.setY(0);
 		
-		renderBkgd(world.boundary);
 		
-		for(Platform p : world.platformList){
-			render(p, boundaryRect);
-		}
+		// draw each of the world's items in terms of the viewport
+		renderBackground();
+		
+		for(Platform p : world.platformList)
+			render(p);
 		
 		for(Enemy e : world.enemyList){
 			if(e instanceof LavaMonster)
-				render((LavaMonster)e, boundaryRect);
-			else if(e instanceof Vulcor)
-				render((Vulcor)e, boundaryRect);
-			else if(e instanceof LavaBall)
-				render((LavaBall)e, boundaryRect);
+				render((LavaMonster)e);
 			else if(e instanceof Spikey)
-				render((Spikey)e, boundaryRect);
-			
+				render((Spikey)e);
+			else if(e instanceof Vulcor)
+				render((Vulcor)e);
+			else
+				render(e);
 		}
+			
 		
-		render(world.player, boundaryRect);
-		render(world.boundary);
-		render(world.lava, boundaryRect);
-		render(world.sideRock, boundaryRect, world.boundary);
+		render(world.player);
+		
+		render(world.lava);
+		
 	}
 	
-	public void renderBkgd(Rectangle boundary){
-		double parallaxFactor = 1 / 32.0;
-
-		gc.drawImage(
-				bkgdImage, 
-				
-				0, 
-				0 + bkgdImage.getHeight() - bkgdImage.getWidth() * screenHeight / screenWidth - boundary.minY() * parallaxFactor,
-				bkgdImage.getWidth(), 
-				bkgdImage.getWidth() * screenHeight / screenWidth, 
-				
-				0, 
-				0, 
-				screenWidth, 
-				screenHeight);
-	
+	public void renderBackground(){
+		Rectangle r = transromRect(new Rectangle(0, 0, 1200, 10000));
+		draw(backgroundImage, new Rectangle(0, 0, 200, 800), r);
 	}
 	
-	public void render(Player player, Rectangle boundary){
-		Rectangle rect = flipY( player.rect() );
-		rect.move(0, -boundary.minY());
-
-		long millisPerFrame = 100;
-		long millis = System.currentTimeMillis();
-		int numFrames = 4;
+	public void render(LavaMonster m){
+		Rectangle r = transromRect(m.rect());
+		draw(lavaMonsterImage, new Rectangle(0, 0, 191, 263), r);
+	}
+	
+	public void render(Spikey s){
+		Rectangle r = transromRect(s.rect());
+		draw(spikeyImage, new Rectangle(0, 0, 75, 110), r);
+	}
+	
+	public void render(Vulcor v){
+		Rectangle r = transromRect(v.rect());
+		if(v.actionMode() == Vulcor.ActionMode.READY)
+			draw(vulcorImage, new Rectangle(100, 0, 100, 100), r);
+		else
+			draw(vulcorImage, new Rectangle(0, 0, 100, 100), r);
+	}
+	
+	public void render(Enemy enemy){
+		Rectangle r = transromRect(enemy.rect());
+		gc.setFill(Color.BROWN);
+		gc.fillRect(r.minX(), r.minY(), r.width(), r.height());
+	}
+	
+	public void render(Player player){
+		Rectangle r = transromRect(player.rect());
 		
-		int frameNum = (int)(millis / millisPerFrame % numFrames);
-		
-		if(player.vX() < -0.1)
+		if(player.vX() < -0.1){
 			ninjaAnimator.setFlippedHorizontal(true);
-		else if (player.vX() > 0.1)
-			ninjaAnimator.setFlippedHorizontal(false);
-		
-		
-		ninjaAnimator.draw(gc, rect, frameNum);
-
-	}
-	
-	public void render(Platform platform, Rectangle boundary){
-		Rectangle rect = flipY( platform.rect() );
-		// figure out number of blocks
-		int numBlocks = (int)rect.width() / 50;
-		int currentBlock = 0;
-		int blockPicNum = 0;
-		
-		// draw first block
-		gc.drawImage(platformImage, blockPicNum * 50, 0, 50, rect.height(), rect.minX() + currentBlock * 50, rect.minY() - boundary.minY(), 50, rect.height());
-		currentBlock++;
-		
-		// draw middle blocks
-		while(currentBlock + 1 < numBlocks){
-			blockPicNum = 1;
-			gc.drawImage(platformImage, blockPicNum * 50, 0, 50, rect.height(), rect.minX() + currentBlock * 50, rect.minY() - boundary.minY(), 50, rect.height());
-			
-			currentBlock++;
+			ninjaAnimator.setRect((int)player.rect().minX() / 30 % 4);
 		}
-
-		// draw last block
-		blockPicNum = 7;
-		gc.drawImage(platformImage, blockPicNum * 50, 0, 50, rect.height(), rect.minX() + currentBlock * 50, rect.minY() - boundary.minY(), 50, rect.height());
-	}
-	
-	public void render(LavaMonster monster, Rectangle boundary){
-		Rectangle rect = flipY( monster.rect() );
-		rect.move(0, -boundary.minY());
-		monsterAnimator.draw(gc, rect);
-		
-		if(System.currentTimeMillis() / 1000 % 2 == 0){
-			monsterAnimator.setFlippedHorizontal(false);
+		else if(player.vX() > 0.1){
+			ninjaAnimator.setFlippedHorizontal(false);
+			ninjaAnimator.setRect((int)player.rect().minX() / 30 % 4);
 		}
 		else{
-			monsterAnimator.setFlippedHorizontal(true);
+			ninjaAnimator.setRect(0);
 		}
 		
+		ninjaAnimator.draw(gc, r);
 	}
 	
-	public void render(SideRock sr, Rectangle flippedBoundary, Rectangle boundary){
-		Rectangle rect = flipY( sr.rect() );
-		rect.move(0, -boundary.minY());
-		
-		// there are 8 levels of rock
-		int numRockPics = 8;
-		
-		// find which number the lowest visible rock number should be, and it's height
-		int rockLevel = (int)boundary.minY() / 50;
-		double rockHeight = -rockLevel * 50;
-		int currentRockPic = rockLevel % numRockPics;
-
-		System.out.println(rockLevel);
-		
-		while(rockHeight > boundary.maxY()){
-			gc.drawImage(sideRockImage, 0, currentRockPic * 50, 50, 50, 0, rockHeight - boundary.minY(), 50, 50);
-			gc.drawImage(sideRockImage, 150, currentRockPic * 50, 50, 50, boundary.maxX() - 50, rockHeight - boundary.minY(), 50, 50);
-			
-			rockLevel++;
-			rockHeight -= 50;
-			currentRockPic = rockLevel % numRockPics;
-		}
-		
-		
+	public void render(Platform platform){
+		Rectangle r = transromRect(platform.rect());
+		draw(platformImage, new Rectangle(0, 0, Math.min(r.width(), 400), r.height()), r);
 	}
 	
-	public void render(LavaBall monster, Rectangle boundary){
-		Rectangle rect = flipY( monster.rect() );
-		rect.move(0,  -boundary.minY());
-		
-		if(monster.actionMode() == 0)
-			gc.setFill(Color.RED);
-		else
-			gc.setFill(Color.BLANCHEDALMOND);
-		
-		gc.fillRect(rect.minX(), rect.minY(), rect.width(), rect.height());
-	}
-	
-	public void render(Spikey monster, Rectangle boundary){
-		Rectangle rect = flipY( monster.rect() );
-		rect.move(0,  -boundary.minY());
-		
-		gc.setFill(Color.GREEN);
-		
-		gc.fillRect(rect.minX(), rect.minY(), rect.width(), rect.height());
-	}
-	
-	public void render(Vulcor v, Rectangle boundary){
-		Rectangle rect = flipY( v.rect() );
-		rect.move(0,  -boundary.minY());
-		if(v.actionMode() == 0)
-			gc.setFill(Color.AZURE);
-		else
-			gc.setFill(Color.BISQUE);
-		gc.fillRect(rect.minX(), rect.minY(), rect.width(), rect.height());
-	}
-	
-
-	public void render(Lava lava, Rectangle boundary){
-		Rectangle rect = flipY( lava.rect() );
+	public void render(Lava lava){
+		Rectangle r = transromRect(lava.rect());
 		gc.setFill(Color.ORANGE);
-		gc.fillRect(rect.minX(), rect.minY() - boundary.minY(), rect.width(), rect.height());
+		gc.fillRect(r.minX(), r.minY(), r.width(), r.height());
 	}
 	
-	public void render(Boundary boundary){
-		Rectangle rect = flipY( boundary );
-		gc.setStroke(Color.BLUE);
-		gc.strokeRect(rect.minX(), 0, rect.width(), rect.height());
+	
+	private Rectangle transromRect(Rectangle r){
+		return new Rectangle(r.minX() - viewport.minX(), viewport.maxY() - r.maxY(), r.width(), r.height());
 	}
 
-	private Rectangle flipY(Rectangle rect){
-		return new Rectangle(rect.minX(), screenHeight - rect.minY() - rect.height(), rect.width(), rect.height());
+	public void renderGameOver(){
+		gc.drawImage(gameOverImage, 0, 0, viewport.width(), viewport.height());
 	}
 	
-	public void renderGameOver(){
-		gc.drawImage(gameOverImage, 0, 0, screenWidth, screenHeight);
+	private void draw(Image img, Rectangle srcRect, Rectangle destRect){
+		gc.drawImage(
+				img, 
+				srcRect.minX(),  srcRect.minY(), srcRect.width(), srcRect.height(),
+				destRect.minX(), destRect.minY(), destRect.width(), destRect.height());
 	}
 
 }

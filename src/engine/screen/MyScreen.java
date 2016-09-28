@@ -1,5 +1,6 @@
 package engine.screen;
 
+
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
@@ -11,6 +12,9 @@ public class MyScreen extends Canvas{
 	
 	public MyScreen(int width, int height){
 		super(width, height);
+		
+
+		
 		
 		timer = new AnimationTimer(){
 			@Override

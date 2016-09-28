@@ -88,16 +88,17 @@ public class Renderer {
 		render(world.player);
 		
 		render(world.lava);
-		
 	}
 	
+	// !!!! come back to this... it's not nice
 	public void renderBackground(){
 		// find src Rectangle
-		final double levelHeight = 10000;
-		final double scrollRatio = 0.5;
+		final double levelHeight = 5000;
+		final double scrollRatio = 0.04;
 		
-		double srcHeight = viewport.height() * backgroundImage.getHeight() / levelHeight;
-		double srcY = backgroundImage.getHeight() - srcHeight - viewport.minY() * scrollRatio * backgroundImage.getHeight() / levelHeight;
+		double srcWidth = backgroundImage.getWidth();
+		double srcHeight = srcWidth * viewport.height() / viewport.width();
+		double srcY = backgroundImage.getHeight() - srcHeight - viewport.minY() * scrollRatio;
 		Rectangle src = new Rectangle(0, srcY, backgroundImage.getWidth(), srcHeight );
 		
 		// find dest Rectangle

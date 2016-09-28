@@ -51,7 +51,7 @@ public class World {
 		// update level entities
 		player.update(deltaTime, this);
 		boundary.update(deltaTime, this);
-		//lava.update(deltaTime, this);
+		lava.update(deltaTime, this);
 		
 		// remove dead enemies from the enemy list
 		for(int i = 0; i < enemyList.size(); i++){

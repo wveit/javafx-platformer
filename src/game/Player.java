@@ -1,5 +1,7 @@
 package game;
 
+import java.util.ArrayList;
+
 import engine.physics.Collision;
 import engine.physics.CollisionInfo;
 import engine.shape.Rectangle;
@@ -27,6 +29,7 @@ public class Player{
 
 	
 	public void update(double deltaTime, World world){
+		
 		vX = 0;
 		
 		if(requestLeft){
@@ -67,12 +70,18 @@ public class Player{
 			}
 		}
 		
-		if(!rect.inside(world.boundary)){
-			CollisionInfo ci = Collision.resolveUncollision(rect, world.boundary);
+		if(rect.overlaps(world.leftBoundary)){
+			CollisionInfo ci = Collision.resolve(rect, world.leftBoundary);
 			if(ci.getX() != 0){
 				rect.move(ci.getX() * ci.getDistance(), 0);
 			}
-				
+		}
+		
+		if(rect.overlaps(world.rightBoundary)){
+			CollisionInfo ci = Collision.resolve(rect, world.leftBoundary);
+			if(ci.getX() != 0){
+				rect.move(ci.getX() * ci.getDistance(), 0);
+			}
 		}
 		
 		for(Enemy e : world.enemyList){

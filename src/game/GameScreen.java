@@ -56,13 +56,18 @@ public class GameScreen extends MyScreen{
 
 	@Override
 	public void tick(long nanoseconds){
-		
 		// Determine deltaTime
 		if(lastNanoseconds == 0)
 			lastNanoseconds = nanoseconds;
 		
 		double deltaTime = (nanoseconds - lastNanoseconds) / 1000000000.0;
 		lastNanoseconds = nanoseconds;
+		
+		System.out.println(deltaTime);
+		
+		for(int i = 0; i < 1000; i++){
+			Math.sqrt(i);
+		}
 		
 		if(world.player.isDead()){
 			renderer.renderGameOver();

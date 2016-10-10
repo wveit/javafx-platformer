@@ -100,13 +100,10 @@ public class Spikey implements Enemy{
 			
 		}
 		
-		if(!rect.inside(world.boundary)){
-			CollisionInfo ci = Collision.resolveUncollision(rect, world.boundary);
-			if(ci.getX() != 0){
-				rect.move(ci.getX() * ci.getDistance(), 0);
-				vX = -vX;
-			}
+		if(rect.overlaps(world.leftBoundary) || rect.overlaps(world.rightBoundary)){
+			vX = -vX;
 		}
+		
 		
 	}
 	

@@ -1,17 +1,18 @@
 package game;
 
 import java.util.ArrayList;
+import engine.shape.Rectangle;
 
 
 public class World {
 	public double gravity = -1000;
 	
 	public Player player;
-	public Boundary boundary;
+	public Rectangle leftBoundary = null;
+	public Rectangle rightBoundary = null;
 	public ArrayList<Platform> platformList = new ArrayList<>();
 	public ArrayList<Enemy> enemyList = new ArrayList<>();
 	public Lava lava;
-	public SideRock sideRock;
 	
 	private double monsterAddHeight = 250;
 	
@@ -23,9 +24,10 @@ public class World {
 
 		double width = 1200;
 		double height = 800;
+		double levelHeight = 10000;
 		
-		boundary = new Boundary(0, 0, width, height);
-		sideRock = new SideRock(0, 0, width, 10000);
+		leftBoundary = new Rectangle(-50, 0, 50, levelHeight * 100);
+		rightBoundary = new Rectangle(width, 0, 50, levelHeight * 100);
 		
 		platformList.add( new Platform(0, 0, width, 50) );
 		platformList.add( new Platform(0, 250, width / 3, 50) );
@@ -50,7 +52,6 @@ public class World {
 		
 		// update level entities
 		player.update(deltaTime, this);
-		boundary.update(deltaTime, this);
 		lava.update(deltaTime, this);
 		
 		// remove dead enemies from the enemy list
@@ -65,8 +66,8 @@ public class World {
 		}
 
 		// add monsters as the player moves up
-		if(boundary.maxY() > monsterAddHeight){
-			enemyList.add(new LavaMonster(Math.random() * boundary.width(), monsterAddHeight + 1000, 50, 50));
+		if(player.rect().maxY() + 1000 > monsterAddHeight){
+			enemyList.add(new LavaMonster(Math.random() * 1200, monsterAddHeight + 1000, 50, 50));
 			monsterAddHeight += 500;
 		}
 	}

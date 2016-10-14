@@ -31,7 +31,7 @@ public class GameScreen extends MyScreen{
 	}
 	
 	public void startGameMusic(){
-		File file = new File("platformer/assets/airwolf.wav");
+		File file = new File("assets/platformer/airwolf.wav");
 		if(file.exists()){			
 			Media media = null;
 			try{

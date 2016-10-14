@@ -1,10 +1,9 @@
-package engine.sprite;
+package platformer.engine.sprite;
 
 import java.util.ArrayList;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-
-import engine.shape.Rectangle;
+import platformer.engine.shape.Rectangle;
 
 
 public class SpriteAnimator {

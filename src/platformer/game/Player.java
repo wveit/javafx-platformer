@@ -1,10 +1,10 @@
-package game;
+package platformer.game;
 
 import java.util.ArrayList;
 
-import engine.physics.Collision;
-import engine.physics.CollisionInfo;
-import engine.shape.Rectangle;
+import platformer.engine.physics.Collision;
+import platformer.engine.physics.CollisionInfo;
+import platformer.engine.shape.Rectangle;
 
 public class Player{
 	

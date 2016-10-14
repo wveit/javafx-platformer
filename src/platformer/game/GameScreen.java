@@ -1,14 +1,14 @@
-package game;
+package platformer.game;
 
 import java.io.File;
 
-import engine.screen.MyScreen;
 import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.media.*;
 import javafx.util.Duration;
+import platformer.engine.screen.MyScreen;
 
 public class GameScreen extends MyScreen{
 	
@@ -31,7 +31,7 @@ public class GameScreen extends MyScreen{
 	}
 	
 	public void startGameMusic(){
-		File file = new File("assets/airwolf.wav");
+		File file = new File("platformer/assets/airwolf.wav");
 		if(file.exists()){			
 			Media media = null;
 			try{
@@ -109,7 +109,7 @@ public class GameScreen extends MyScreen{
 		}
 		else if(e.getCode() == KeyCode.R){
 			if(world.player.isDead()){
-				world = new World("hardwired_level.lvl");
+				world = new World("volcano_level.lvl");
 			}
 		}
 		

@@ -1,6 +1,6 @@
-package game;
+package platformer.game;
 
-import engine.shape.Rectangle;
+import platformer.engine.shape.Rectangle;
 
 public class Platform {
 	private Rectangle rect;

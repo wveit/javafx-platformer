@@ -1,4 +1,4 @@
-package engine.shape;
+package platformer.engine.shape;
 
 
 public class Rectangle {

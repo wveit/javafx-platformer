@@ -1,7 +1,8 @@
-package game;
+package platformer.game;
 
 import java.util.ArrayList;
-import engine.shape.Rectangle;
+
+import platformer.engine.shape.Rectangle;
 
 
 public class World {

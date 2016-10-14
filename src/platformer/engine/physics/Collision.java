@@ -1,6 +1,6 @@
-package engine.physics;
+package platformer.engine.physics;
 
-import engine.shape.Rectangle;
+import platformer.engine.shape.Rectangle;
 
 public class Collision {
 	public static CollisionInfo resolve(Rectangle r1, Rectangle r2){

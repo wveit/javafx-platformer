@@ -1,4 +1,4 @@
-package engine.physics;
+package platformer.engine.physics;
 
 public class CollisionInfo {
 	private double x;

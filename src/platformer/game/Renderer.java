@@ -1,12 +1,12 @@
-package game;
+package platformer.game;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import platformer.engine.shape.Rectangle;
+import platformer.engine.sprite.SpriteAnimator;
 
 import java.io.File;
 
-import engine.shape.Rectangle;
-import engine.sprite.SpriteAnimator;
 import javafx.scene.image.Image;
 
 public class Renderer {
@@ -31,7 +31,7 @@ public class Renderer {
 		
 		// load images		
 		try{
-			ninjaImage = new Image(new File("assets/ninja.png").toURI().toURL().toString());
+			ninjaImage = new Image(new File("platformer/assets/ninja.png").toURI().toURL().toString());
 			ninjaAnimator = new SpriteAnimator(ninjaImage);
 			ninjaAnimator.addMode();
 			ninjaAnimator.addRectToMode(0, new Rectangle(0, 0, 105, 175));
@@ -40,16 +40,16 @@ public class Renderer {
 			ninjaAnimator.addRectToMode(0, new Rectangle(315, 0, 105, 175));
 			ninjaAnimator.showBox(true);
 			
-			lavaMonsterImage = new Image(new File("assets/lava_monster.png").toURI().toURL().toString());
+			lavaMonsterImage = new Image(new File("platformer/assets/lava_monster.png").toURI().toURL().toString());
 			lavaMonsterAnimator = new SpriteAnimator(lavaMonsterImage);
 			lavaMonsterAnimator.addMode();
 			lavaMonsterAnimator.addRectToMode(0, new Rectangle(0, 0, 191, 263));
 			
-			spikeyImage = new Image(new File("assets/spikey.png").toURI().toURL().toString());
-			vulcorImage = new Image(new File("assets/vulcor.png").toURI().toURL().toString());
-			backgroundImage = new Image(new File("assets/volcano_background.png").toURI().toURL().toString());
-			platformImage = new Image(new File("assets/platform.png").toURI().toURL().toString());
-			gameOverImage = new Image(new File("assets/gameover.png").toURI().toURL().toString());
+			spikeyImage = new Image(new File("platformer/assets/spikey.png").toURI().toURL().toString());
+			vulcorImage = new Image(new File("platformer/assets/vulcor.png").toURI().toURL().toString());
+			backgroundImage = new Image(new File("platformer/assets/volcano_background.png").toURI().toURL().toString());
+			platformImage = new Image(new File("platformer/assets/platform.png").toURI().toURL().toString());
+			gameOverImage = new Image(new File("platformer/assets/gameover.png").toURI().toURL().toString());
 		
 		}catch(Exception e){
 			System.out.println("Renderer2 had problems loading images.");

@@ -1,9 +1,9 @@
-package game;
+package platformer.game;
 
-import engine.screen.MyScreen;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import platformer.engine.screen.MyScreen;
 import javafx.scene.Group;
 
 

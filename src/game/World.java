@@ -14,14 +14,25 @@ public class World {
 	public ArrayList<Enemy> enemyList = new ArrayList<>();
 	public Lava lava;
 	
-	private double monsterAddHeight = 250;
-	
 	public World(String filename){
 		this.load(filename);
 	}
 	
-	public void load(String filename){
+	public boolean load(String filename){
 
+		if(filename.equals("volcano_level.lvl")){
+			loadVolcano();
+			return true;
+		}
+		else if(filename.equals("jungle_level.lvl")){
+			loadVolcano();
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	private void loadVolcano(){
 		double width = 1200;
 		double height = 800;
 		double levelHeight = 10000;
@@ -41,11 +52,16 @@ public class World {
 			platformList.add( new Platform(2 * width / 3, start + i * size + 250, width / 3, 50) );
 		}
 		
+		enemyList.add(new LavaMonster(800, 1000, 50, 50));
 		enemyList.add(new Vulcor(600, 600, 50, 50));
 		enemyList.add(new Spikey(600, 600, 50, 50));
 		
 		player = new Player(250, 250, 50, 75);
 		lava = new Lava(0, -100 - height, width, height);
+	}
+	
+	private void loadJungle(){
+		
 	}
 	
 	public void update(double deltaTime){
@@ -54,7 +70,7 @@ public class World {
 		player.update(deltaTime, this);
 		lava.update(deltaTime, this);
 		
-		// remove dead enemies from the enemy list
+		// remove dead enemies from the enemy list and update live enemies
 		for(int i = 0; i < enemyList.size(); i++){
 			if(enemyList.get(i).isDead()){
 				enemyList.remove(i);
@@ -65,10 +81,5 @@ public class World {
 			}
 		}
 
-		// add monsters as the player moves up
-		if(player.rect().maxY() + 1000 > monsterAddHeight){
-			enemyList.add(new LavaMonster(Math.random() * 1200, monsterAddHeight + 1000, 50, 50));
-			monsterAddHeight += 500;
-		}
 	}
 }

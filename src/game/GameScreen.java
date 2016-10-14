@@ -24,7 +24,7 @@ public class GameScreen extends MyScreen{
 	public GameScreen(int width, int height){
 		super(width, height);
 		
-		world = new World("hardwired_level.lvl");
+		world = new World("volcano_level.lvl");
 		renderer = new Renderer(this.getGraphicsContext2D(), width, height);
 		
 		startGameMusic();
